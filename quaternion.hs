@@ -41,4 +41,3 @@ rotator [x,y,z] th = QT (cos (th/2)) [(x/l)*v, (y/l)*v, (z/l)*v]
 -- rotatorでPointを回転する
 rot :: Quaternion -> [Double] -> [Double]
 rot r p = q where (QT _ q) = (r ¥**¥ (QT 0 p) ¥**¥ (conj r))
-
