@@ -1,4 +1,4 @@
-module Aerial (Frame, ident,tppry, los) where
+module Aerial (Frame(..), ident,tppry, module Quaternion) where
 import Quaternion
 
 ---- 航空機の座標系
@@ -52,6 +52,3 @@ tilt t c = rotY t c
 tppry :: Double -> Double -> Double -> Double -> Double -> Frame -> Frame
 tppry y r pt pa t c = (tilt t).(pan pa).(pitch pt).(roll r).(yaw y) $ c
 
--- 光軸
-los :: Frame -> [Double]
-los (FR x _ _) = x
