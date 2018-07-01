@@ -1,5 +1,5 @@
 module Quaternion
-       (Quaternion(..),rotator,rot)
+       (Quaternion(..),rotator,rot,module Matrix)
        where
 
 import Matrix
