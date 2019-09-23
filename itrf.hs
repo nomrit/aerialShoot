@@ -73,5 +73,37 @@ itrf2wgs i = [Matrix.toD(p),Matrix.toD(l),h]
                 d = delta z (k i) phip
         h = height i p
 
+-- ITRF -> LCF(Local Cartesian Frame) 変換
+itrf2lcf :: [Double] -> [Double] -> [Double]
+itrf2lcf [lat,lon,h] [x,y,z] = (f [x,y,z]) |-| (f (wgs2itrf [lat,lon,h])) 
+  where f = wgs2rot [lat,lon,h]
+
+-- WGS84 -> LCF 
+wgs2rot :: [Double] -> [Double] -> [Double]
+wgs2rot d1 d2 = w2r (ITRF.toR d1) d2
+
+-- 内部関数
+-- itrfをzを軸にl回転し、yを軸にpi/4-pだけ回転させたものになる。
+w2r :: [Double] -> [Double] -> [Double]
+w2r [lat,lon,_] [x,y,z] = [ sp*cl*x+sp*sl*y+((-cp)*z), (-sl)*x+cl*y, cp*cl*x+cp*sl*y+sp*z ]
+  where sp = sin lat
+        sl = sin lon
+        cp = cos lat
+        cl = cos lon
+
+-- LCF -> ITRF 変換
+lcf2itrf :: [Double] -> [Double] -> [Double]
+lcf2itrf d [x,y,z] = w2r' (ITRF.toR d) ([x,y,z] |+| (wgs2rot d (wgs2itrf d)))
+
+-- 内部関数
+w2r' [lat,lon,_] [x,y,z] = [ sp*cl*x+(-sl)*y+cp*cl*z, sp*sl*x+cl*y+cp*sl*z, (-cp)*x+sp*z ]
+  where sp = sin lat
+        sl = sin lon
+        cp = cos lat
+        cl = cos lon
 
 
+-- 試験用関数 mapf
+mapf :: [([Double]->a)] -> [Double] -> [a]
+mapf [] _ = []
+mapf (f:fs) x = f x:mapf fs x
