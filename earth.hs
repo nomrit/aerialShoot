@@ -3,10 +3,17 @@ module Earth where
 import Matrix
 
 equatorialRadius = 6378137.0 -- 長半径(m)
-a = equatorialRadius
-
 flattening = 1 / 298.257222101 -- 扁平率
+
+{- 本番用
+a = equatorialRadius
 f = flattening
+-}
+
+{- 試験用 半径1000mの真球 -}
+
+a = 1000
+f = 0
 
 polarRadius = a * (1-f) -- 短半径
 b = polarRadius
