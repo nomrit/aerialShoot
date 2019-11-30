@@ -1,5 +1,5 @@
 module Matrix
-       ( toR, toD, dot, (|.|), cross, (|*|), (|+|), (|-|), sc, (/*/), det )
+       ( toR, toD, dot, (|.|), cross, (|*|), (|+|), (|-|), sc, (/*/), det, cramer )
        where
 ---- 一般
 toR::Double -> Double
@@ -45,3 +45,9 @@ det [[a]] = a
 det [[a,c],[b,d]] = a*d - b*c
 det [[a1,a4,a7],[a2,a5,a8],[a3,a6,a9]] = a1*a5*a9+a2*a6*a7+a3*a4*a8-a3*a5*a7-a2*a4*a9-a1*a6*a8
 
+-- クラメルの式による方程式の解
+cramer :: [[Double]] -> [Double] -> [Double]
+cramer [a1,a2] b = [(det [b,a2])/a,(det [a1,b])/a]
+                    where a = det [a1,a2]
+cramer [a1,a2,a3] b = [(det [b,a2,a3])/a,(det [a1,b,a3])/a,(det [a1,a2,b])/a]
+                    where a = det [a1,a2,a3]
