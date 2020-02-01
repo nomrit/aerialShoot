@@ -7,7 +7,7 @@ import Matrix
 -- 想定 0,0 -> 31 , +180 -> 60, -180 -> 1
 -- 
 mod6 :: Double -> Int
-mod6 lon = floor ((lon*180)/(pi*6))
+mod6 lon = floor ((Matrix.toD lon)/6)
 
 zone :: Double -> Int -- 経度からZONE番号
 zone lon = mod6 lon + 31
@@ -16,8 +16,7 @@ enoz z = Matrix.toR(fromIntegral((z-31) * 6 + 3)::Double)
 
 -- 緯度からそのゾーンの中心 lambda0 -pi<= l0 <=pi
 l0 :: Double -> Double
-l0 lon = ((fromIntegral(mod6 lon)) :: Double)*pi/30+(pi/60)
-
+l0 lon = enoz (zone lon)
 
 -- 補助関数
 toR :: [Double] -> [Double]
@@ -84,8 +83,8 @@ nextlp (x,y) (x',y') (l,p)
     = (l',p') where p' = p-(y'-y)/largeA
                     l' = l-(x'/((n p')*(cos p'))-x/((n p)*(cos p)))
 
-diff :: (Double,Double) -> (Double,Double) -> Bool
-diff (x,y) (x',y') = (sqrt(abs(x'-x)^2+abs(y'-y)^2))<1
+diff :: Double -> Double -> Bool
+diff dl dp = sqrt(abs(dl)^2+abs(dp)^2) < (pi/(180*3600*1000))
 
 unm0k :: (Double,Double) -> (Double,Double)
 unm0k (x,y) = ((x-x0)/(m0*k),(y/(m0*k)))
@@ -104,7 +103,7 @@ u2w (x,y) (l,p)
 
 u2w :: (Double,Double) -> (Double,Double) -> [Double]
 u2w (x,y) (l,p)
-        | (diff (x,y) (x',y')) = [p',l',0]
+        | (diff dl dp) = [p',l',0]
         | otherwise = u2w (x,y) (l',p') 
     where (x',y') = lp2xy (l,p)
           (l',p') = nextlp (x,y) (x',y') (l,p)
