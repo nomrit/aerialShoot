@@ -3,10 +3,10 @@ module Matrix
        where
 ---- 一般
 toR::Double -> Double
-toR d = (d/180*pi)
+toR d = d*pi/180
 
 toD::Double->Double
-toD r = (r/pi*180)
+toD r = (fromIntegral (round((r/pi*180)*(10^7)))::Double)/(10^7)
 
 ---- 行列演算の定義
 
