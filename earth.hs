@@ -46,3 +46,7 @@ arcMeridian lat = a * (1-e2)*(a'*lat - (b'/2)*(sin(2*lat)) + (c'/4)*(sin(4*lat))
         e' = ((3465/65536)*e2+(315/16384))*(e2^4)
         f' = (693/131072)*(e2^5)
 s = arcMeridian
+
+-- 平行圏弧長。parallel of latitude
+parLatitude :: Double -> Double -> Double
+parLatitude lat lon = lon * (a * (cos lat)) / (sqrt (1-(e2*((sin lat)^2))))
