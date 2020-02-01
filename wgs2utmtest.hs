@@ -21,5 +21,5 @@ mainloop inh outh =
           else do inStr <- hGetLine inh
                   if (head inStr == '#')
                      then hPutStrLn outh inStr
-                     else hPutStrLn outh (inStr ++ "," ++ (show (wgs2utm$GaussCruger.toR (map (read::String->Double) (splitOn "," inStr)))))
+                     else hPutStrLn outh ("[" ++ inStr ++ "]," ++ (show (wgs2utm$GaussCruger.toR (map (read::String->Double) (splitOn "," inStr)))))
                   mainloop inh outh
