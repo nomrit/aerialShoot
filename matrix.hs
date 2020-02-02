@@ -2,11 +2,14 @@ module Matrix
        ( toR, toD, dot, (|.|), cross, (|*|), (|+|), (|-|), sc, (/*/), det, cramer )
        where
 ---- 一般
+round::Double -> Int
+round x = floor (x+1/2)
+
 toR::Double -> Double
 toR d = d*pi/180
 
 toD::Double->Double
-toD r = (fromIntegral (round((r/pi*180)*(10^7)))::Double)/(10^7)
+toD r = (fromIntegral (Matrix.round((r/pi*180)*(10^7)))::Double)/(10^7)
 
 ---- 行列演算の定義
 
