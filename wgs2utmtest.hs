@@ -1,4 +1,4 @@
--- utm2wgstest
+-- wgs2utmtest
 --
 import System.IO
 import Data.List.Split
